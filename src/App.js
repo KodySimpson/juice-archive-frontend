@@ -14,7 +14,7 @@ function App() {
 
     useEffect(() => {
 
-        axios.get('https://juice-archive-b646t.ondigitalocean.app:8080/music')
+        axios.get('https://juice-archive-b646t.ondigitalocean.app/music')
             .then(function (response) {
                 // handle success
                 setSongs(response.data);

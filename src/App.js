@@ -3,8 +3,10 @@ import axios from 'axios';
 
 function App() {
 
-    const [songs, setSongs] = useState(['efef']);
-    const [currentSong, setCurrentSong] = useState('juice/Rockstar Status - Juice WRLD.mp3');
+    const [songs, setSongs] = useState([]);
+    const [currentSong, setCurrentSong] = useState({
+        fileName: 'Rockstar Status - Juice WRLD.mp3'
+    });
     const [queue, setQueue] = useState([]);
     const [history, setHistory] = useState([]);
 
@@ -14,7 +16,7 @@ function App() {
 
     useEffect(() => {
 
-        axios.get('https://juice-archive-b646t.ondigitalocean.app/music')
+        axios.get('http://localhost:8080/music')
             .then(function (response) {
                 // handle success
                 setSongs(response.data);
@@ -63,13 +65,13 @@ function App() {
     }
 
     let songList = songs.map((song) => {
-        return <SongListing songName={song} playSong={playSong} queueSong={queueSong}></SongListing>;
+        return <SongListing song={song} playSong={playSong} queueSong={queueSong} key={song.id}></SongListing>;
     });
 
     let queueList = '';
     if (queue) {
         queueList = queue.map((song) => {
-            return <SongListing songName={song} playSong={playSong} queueSong={queueSong}></SongListing>;
+            return <QueueListing song={song} playSong={playSong} dequeueSong={dequeueSong} queueSong={queueSong} key={song.id}></QueueListing>;
         });
     }
 
@@ -79,6 +81,14 @@ function App() {
 
     function queueSong(songKey) {
         setQueue([...queue, songKey]);
+    }
+
+    function dequeueSong(songQueueIndex) {
+        const currentQueue = [...queue];
+        console.log("current queue: " + currentQueue);
+        currentQueue.splice(songQueueIndex);
+        console.log("spliced queue: " + currentQueue);
+        setQueue(currentQueue);
     }
 
     let queuePanel = '';
@@ -105,7 +115,7 @@ function App() {
                                 <tbody>
                                 <tr className="bg-black">
                                     <td className="px-6 py-4 whitespace-nowrap text-xl font-medium text-white bg-black">
-                                        {currentSong.substr(6)}
+                                        {currentSong.fileName}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium inline-flex space-x-2 bg-black">
                                         <button onClick={prevSong} type="button"
@@ -118,7 +128,7 @@ function App() {
                                         </button>
                                         <button
                                             className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                            onClick={() => playSong(currentSong)}>Replay
+                                            onClick={() => playSong(currentSong)}>Restart
                                         </button>
                                         <button onClick={nextSong} type="button"
                                                 className="inline-flex items-center p-1.5 border border-transparent rounded-full shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
@@ -148,7 +158,7 @@ function App() {
                 <h1 class="text-6xl font-extrabold">Juice Archive</h1>
                 <img src="https://media.tenor.com/images/0e8d94666a84b1bf736a0326ed7f71b7/tenor.gif" class="mx-auto"/>
                 <audio onEnded={nextSong} className="mx-auto w-full"
-                       src={'https://kody.sfo3.cdn.digitaloceanspaces.com/' + currentSong} controls>
+                       src={'https://kody.sfo3.cdn.digitaloceanspaces.com/juice/' + currentSong.fileName} controls>
                     <source type="audio/mpeg"/>
                     Your browser does not support the audio element.
                 </audio>
@@ -193,10 +203,10 @@ function SongListing(props) {
     return (
         <tr class="bg-white">
             <td class="px-6 py-4 whitespace-nowrap text-lg font-medium text-gray-900">
-                {props.songName.substr(6)}
+                {props.song.fileName}
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium inline-flex space-x-2">
-                <button onClick={() => props.queueSong(props.songName)} type="button"
+                <button onClick={() => props.queueSong(props.song)} type="button"
                         class="inline-flex items-center p-1.5 border border-transparent rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                          aria-hidden="true">
@@ -207,7 +217,40 @@ function SongListing(props) {
                 </button>
                 <button
                     className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    onClick={() => props.playSong(props.songName)}>Play
+                    onClick={() => props.playSong(props.song)}>Play
+                </button>
+            </td>
+        </tr>
+    );
+
+}
+
+function QueueListing(props) {
+
+    return (
+        <tr class="bg-white">
+            <td class="px-6 py-4 whitespace-nowrap text-lg font-medium text-gray-900">
+                {props.song.fileName}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium inline-flex space-x-2">
+                <button onClick={() => props.dequeueSong(props.song)} type="button"
+                        className="inline-flex items-center p-1.5 border border-transparent rounded-full shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+                <button
+                    className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    onClick={() => props.playSong(props.song)}>Play
+                </button>
+                <button onClick={() => props.queueSong(props.song)} type="button"
+                        className="inline-flex items-center p-1.5 border border-transparent rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                         aria-hidden="true">
+                        <path fill-rule="evenodd"
+                              d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                              clip-rule="evenodd"/>
+                    </svg>
                 </button>
             </td>
         </tr>

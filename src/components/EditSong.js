@@ -91,13 +91,13 @@ export default function EditSong(props){
                                 <div className="px-4 py-5 bg-gray-900 sm:p-6">
                                     <div className="grid grid-cols-6 gap-6">
 
-                                        <div className="col-span-6 sm:col-span-6 lg:col-span-2">
+                                        <div className="col-span-6 sm:col-span-6 lg:col-span-3">
                                             <label htmlFor="email-address" className="block text-lg font-medium text-white">Title</label>
                                             <input type="text" value={song.title} onChange={(e) => onTitleInput(e)} name="email-address" id="email-address" autoComplete="email"
                                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full text-lg shadow-sm sm:text-lg border-gray-300 rounded-md" />
                                         </div>
 
-                                        <div className="col-span-6 sm:col-span-6 lg:col-span-2">
+                                        <div className="col-span-6 sm:col-span-6 lg:col-span-3">
                                             <label htmlFor="city" className="block text-lg font-medium text-white">Artist</label>
                                             <input onChange={(e) => onArtistInput(e)} type="text" value={song.artist} name="city" id="city"
                                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-lg border-gray-300 rounded-md" />
@@ -105,7 +105,7 @@ export default function EditSong(props){
 
                                         <div className="col-span-6">
 
-                                            <div className="text-center">
+                                            <div className="text-center space-x-2">
                                                 {
                                                     (song.favorited) ?
                                                         <button onClick={favoriteButton} type="button" className="inline-flex items-center p-3 border border-transparent rounded-full shadow-sm text-white bg-red-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
@@ -120,6 +120,11 @@ export default function EditSong(props){
                                                             </svg>
                                                         </button>
                                                 }
+                                                        <button onClick={favoriteButton} type="button" className="inline-flex items-center p-3 border border-transparent rounded-full shadow-sm text-white bg-gray-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                            </svg>
+                                                        </button>
                                             </div>
 
                                         </div>

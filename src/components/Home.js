@@ -39,23 +39,24 @@ export default function Home(props){
                         <div className="shadow overflow-hidden border-gray-200 sm:rounded-lg">
                             <table className="min-w-full divide-y divide-gray-200">
                                 <thead className="bg-gray-900">
-                                <tr>
+                                <tr className="grid grid-cols-6">
 
                                     {
                                         (props.loading) ?
                                             <>
                                                 <th scope="col"
-                                                    className="px-6 py-3 text-left text-lg font-medium text-gray-500 uppercase tracking-wider">
+                                                    className="col-span-3 px-6 py-3 text-left text-lg font-medium text-gray-500 uppercase tracking-wider">
                                                     Favorited
                                                 </th>
                                             </> :
                                             <>
                                                 <th scope="col"
-                                                    className="px-6 py-3 text-left text-lg font-medium text-gray-500 uppercase tracking-wider">
+                                                    className="col-span-3 px-6 py-3 text-left text-lg font-medium text-gray-500 uppercase tracking-wider">
                                                     Favorited
                                                 </th>
                                                 <th scope="col"
-                                                    className="px-6 py-3 text-left text-lg font-medium text-gray-500 uppercase tracking-wider">
+                                                    className="col-span-3 justify-end px-6 py-3 text-right text-lg font-medium text-gray-500 uppercase tracking-wider">
+                                                    Controls
                                                 </th>
                                             </>
                                     }
@@ -79,11 +80,11 @@ export default function Home(props){
                                             {
                                                 favoritedSongs.map((song) => {
                                                     return (
-                                                        <tr className="bg-gray-900">
-                                                            <td className="px-6 py-4 whitespace-nowrap text-lg font-medium text-white">
+                                                        <tr className="bg-gray-900 grid grid-cols-6">
+                                                            <td className="col-span-3 px-6 py-4 whitespace-nowrap text-lg font-medium text-white">
                                                                 {song.title}
                                                             </td>
-                                                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium inline-flex space-x-2">
+                                                            <td className="col-span-3 px-6 py-4 whitespace-nowrap text-right text-sm font-medium inline-flex justify-end space-x-2">
                                                                 {
                                                                     (song.favorited) ?
                                                                         <button onClick={() => favoriteButton(song)}
@@ -114,7 +115,7 @@ export default function Home(props){
                                                                 }
                                                                 <button onClick={() => props.queueSong(song)}
                                                                         type="button"
-                                                                        className="inline-flex items-center p-1.5 border border-transparent rounded-full shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                                        className="inline-flex p-1.5 border border-transparent rounded-full shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                                                     <svg className="h-5 w-5"
                                                                          xmlns="http://www.w3.org/2000/svg"
                                                                          viewBox="0 0 20 20" fill="currentColor"
@@ -125,7 +126,7 @@ export default function Home(props){
                                                                     </svg>
                                                                 </button>
                                                                 <button
-                                                                    className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-black bg-gray-100 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                                                                    className="inline-flex px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-black bg-gray-100 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                                                                     onClick={() => props.playSongButton(song)}>Play
                                                                 </button>
                                                             </td>
@@ -149,7 +150,7 @@ export default function Home(props){
                         <div className="shadow overflow-hidden border-gray-200 sm:rounded-lg">
                             <table className="min-w-full divide-y divide-gray-200">
                                 <thead className="bg-gray-900">
-                                <tr>
+                                <tr className="grid grid-cols-6">
 
                                     {
                                         (props.loading) ?
@@ -161,11 +162,12 @@ export default function Home(props){
                                             </> :
                                             <>
                                                 <th scope="col"
-                                                    className="px-6 py-3 text-left text-lg font-medium text-gray-500 uppercase tracking-wider">
+                                                    className="col-span-3 px-6 py-3 text-left text-lg font-medium text-gray-500 uppercase tracking-wider">
                                                     Songs
                                                 </th>
                                                 <th scope="col"
-                                                    className="px-6 py-3 text-left text-lg font-medium text-gray-500 uppercase tracking-wider">
+                                                    className="col-span-3 px-6 py-3 text-right text-lg font-medium text-gray-500 uppercase tracking-wider">
+                                                    Controls
                                                 </th>
                                             </>
                                     }
@@ -189,11 +191,11 @@ export default function Home(props){
                                             {
                                                 props.songs.map((song) => {
                                                     return (
-                                                        <tr class="bg-gray-900">
-                                                            <td class="px-6 py-4 whitespace-nowrap text-lg font-medium text-white">
+                                                        <tr class="bg-gray-900 grid grid-cols-6">
+                                                            <td class="col-span-3 px-6 py-4 whitespace-nowrap text-lg font-medium text-white">
                                                                 {song.title}
                                                             </td>
-                                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium inline-flex space-x-2">
+                                                            <td class="col-span-3 px-6 py-4 whitespace-nowrap text-right text-sm font-medium inline-flex justify-end space-x-2">
                                                                     {
                                                                         (song.favorited) ?
                                                                             <button onClick={() => favoriteButton(song)} type="button" className="inline-flex items-center p-1.5 border border-transparent rounded-full shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">

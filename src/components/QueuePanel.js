@@ -2,11 +2,12 @@
 
 export default function QueuePanel(props){
 
-    function dequeueSong(songQueueIndex) {
+    function handleDequeue(songtoremove) {
+
         const currentQueue = [...props.queue];
-        console.log("current queue: " + currentQueue);
-        currentQueue.splice(songQueueIndex);
-        console.log("spliced queue: " + currentQueue);
+        const index = currentQueue.findIndex((song) => song.id === songtoremove.id);
+
+        currentQueue.splice(index, 1);
         props.setQueue(currentQueue);
     }
 
@@ -38,19 +39,22 @@ export default function QueuePanel(props){
                                                 <a href="#" className="hover:bg-gray-300"><span>{song.fileName}</span></a>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium inline-flex space-x-2">
-                                                <button onClick={() => props.dequeueSong(song)} type="button"
+                                                <button onClick={() => handleDequeue(song)} type="button"
                                                         className="inline-flex items-center p-1.5 border border-transparent rounded-full shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                                     </svg>
                                                 </button>
                                                 <button
-                                                    className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                                    onClick={() => props.playSong(song)}>Play
+                                                    className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-black bg-gray-100 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                                                    onClick={() => props.playSongButton(song)}>Play
                                                 </button>
-                                                <button onClick={() => props.queueSong(song)} type="button"
-                                                        className="inline-flex items-center p-1.5 border border-transparent rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                                    <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                                <button onClick={() => props.queueSong(song)}
+                                                        type="button"
+                                                        className="inline-flex items-center p-1.5 border border-transparent rounded-full shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                    <svg className="h-5 w-5"
+                                                         xmlns="http://www.w3.org/2000/svg"
+                                                         viewBox="0 0 20 20" fill="currentColor"
                                                          aria-hidden="true">
                                                         <path fill-rule="evenodd"
                                                               d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"

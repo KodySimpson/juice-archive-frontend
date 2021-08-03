@@ -17,6 +17,9 @@ import EditSong from "./components/EditSong";
 function App() {
 
     const [isPlaying, setPlaying] = useState(false);
+    const [duration, setDuration] = useState(60);
+    const [currentTime, setCurrentTime] = useState(0);
+
     const [songs, setSongs] = useState([]);
     const [currentSong, setCurrentSong] = useState({
         title: 'Rockstar Status',
@@ -29,6 +32,7 @@ function App() {
 
     function play() {
         document.querySelector("audio").play().then(r => console.log("Playing song."));
+        setDuration(audio().duration);
         setPlaying(true);
     }
 
@@ -71,7 +75,7 @@ function App() {
 
         setLoading(true);
 
-        axios.get('http://localhost:8080/api/songs')
+        axios.get('https://juice-archive-b646t.ondigitalocean.app/api/songs')
             .then(function (response) {
                 // handle success
                 setSongs(response.data);
@@ -172,18 +176,18 @@ function App() {
                         </Link>
 
 
-                        <Link to="/catalog">
-                            <button type="button"
-                                    className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-black bg-gray-100 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="-ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-                                </svg>
-                                Playlists
-                            </button>
-                        </Link>
+                        {/*<Link to="/catalog">*/}
+                        {/*    <button type="button"*/}
+                        {/*            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-black bg-gray-100 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700">*/}
+                        {/*        <svg xmlns="http://www.w3.org/2000/svg" className="-ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">*/}
+                        {/*            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />*/}
+                        {/*        </svg>*/}
+                        {/*        Playlists*/}
+                        {/*    </button>*/}
+                        {/*</Link>*/}
 
                     </div>
-                    <audio onEnded={nextSong} className="mx-auto w-full"
+                    <audio onEnded={nextSong} onPause={() => setPlaying(false)} onPlay={() => setPlaying(true)} onTimeUpdate={() => setCurrentTime(audio().currentTime)} className="mx-auto w-full"
                            src={'https://kody.sfo3.cdn.digitaloceanspaces.com/juice/' + currentSong.fileName} controls>
                         <source type="audio/mpeg"/>
                         Your browser does not support the audio element.
@@ -205,7 +209,7 @@ function App() {
             </div>
 
             <div className="mx-auto w-3/6">
-                <Player isPlaying={isPlaying} play={play} currentSong={currentSong} queue={queue} playSongButton={playSongButton} setQueue={setQueue} nextSong={nextSong} prevSong={prevSong} pauseSong={pauseSong} />
+                <Player duration={duration} currentTime={currentTime} isPlaying={isPlaying} play={play} currentSong={currentSong} queue={queue} playSongButton={playSongButton} setQueue={setQueue} nextSong={nextSong} prevSong={prevSong} pauseSong={pauseSong} />
             </div>
         </Router>
 

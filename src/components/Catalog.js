@@ -2,65 +2,40 @@ import {
     Link
 } from "react-router-dom";
 import {useEffect, useState} from "react";
-import axios from "axios";
+import Loading from "./Loading";
 
 export default function Catalog(props){
 
     const [results, setResults] = useState([props.songs]);
+    const {favoriteHandler, isLoading, songs} = props;
 
+    //when the songs are done loading, use that as the basis for the results to display for searching to be done
     useEffect(function () {
-        setResults(props.songs);
-    }, [props.loading]);
+        setResults(songs);
+    }, [isLoading]);
 
-    function search(e){
-
+    function searchHandler(e){
         const searchTerm = e.target.value;
-
-        setResults(props.songs.filter(song => song.title.toLowerCase().startsWith(searchTerm.toLowerCase())));
-
-    }
-
-    function favoriteButton(song){
-
-        if(song && !props.loading){
-            console.log("Saving the song");
-            axios.put("https://juice-archive-b646t.ondigitalocean.app/api/songs/" + song.id, {
-                favorited: !song.favorited
-            }).then(function (response) {
-
-                props.refreshSongs();
-
-            }).catch(function (error) {
-                // handle error
-                console.log(error);
-            });
-        }
-
+        setResults(songs.filter(song => song.title.toLowerCase().includes(searchTerm.toLowerCase())));
     }
 
     return (
         <div>
-
             {
-                (props.loading) ?
-                    <>
-                        <img
-                            src="https://cdn2.scratch.mit.edu/get_image/gallery/1832260_170x100.png"
-                            alt="bruh"/>
-                    </> :
-                    <>
+                (isLoading) ? <Loading /> :
+                    <div>
                         <div className="mx-16 pb-6">
                             <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                                <label htmlFor="email-address" className="block text-lg font-medium text-white">Search:</label>
-                                <input onChange={(e) => search(e)} placeholder="Type a song title..." type="text" name="email-address" id="email-address" autoComplete="email"
-                                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full text-lg shadow-sm sm:text-lg border-gray-300 rounded-md" />
+                                <label htmlFor="songTitle" className="block text-lg font-medium text-white">Search:</label>
+                                <input onChange={(e) => searchHandler(e)} placeholder="Type a song title..." type="text" name="songTitle" id="songTitle"
+                                       className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full text-lg shadow-sm sm:text-lg border-gray-300 rounded-md" />
                             </div>
                         </div>
 
                         <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                             {
                                 results.map(function (song) {
-                                    return <li className="col-span-1 bg-white rounded-lg shadow divide-y divide-gray-200">
+                                    return <li key={song.id} className="col-span-1 bg-white rounded-lg shadow divide-y divide-gray-200">
                                         <div className="w-full flex items-center justify-between p-6 space-x-6">
                                             <div className="flex-1 truncate">
                                                 <div className="flex items-center space-x-3">
@@ -72,13 +47,13 @@ export default function Catalog(props){
                                             <div className="text-center">
                                                 {
                                                     (song.favorited) ?
-                                                        <button onClick={() => favoriteButton(song)} type="button" className="inline-flex items-center p-3 border border-transparent rounded-full shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                        <button onClick={() => favoriteHandler(song)} type="button" className="inline-flex items-center p-3 border border-transparent rounded-full shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                                                 <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
                                                             </svg>
                                                         </button>
                                                         :
-                                                        <button onClick={() => favoriteButton(song)} type="button" className="inline-flex items-center p-3 border border-transparent rounded-full shadow-sm text-white bg-gray-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                        <button onClick={() => favoriteHandler(song)} type="button" className="inline-flex items-center p-3 border border-transparent rounded-full shadow-sm text-white bg-gray-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                                             </svg>
@@ -109,7 +84,7 @@ export default function Catalog(props){
                                 })
                             }
                         </ul>
-                    </>
+                    </div>
             }
 
 

@@ -1,11 +1,9 @@
-
-
 export default function QueuePanel(props){
 
-    function handleDequeue(songtoremove) {
+    function handleDequeue(songToRemove) {
 
         const currentQueue = [...props.queue];
-        const index = currentQueue.findIndex((song) => song.id === songtoremove.id);
+        const index = currentQueue.findIndex((song) => song.id === songToRemove.id);
 
         currentQueue.splice(index, 1);
         props.setQueue(currentQueue);

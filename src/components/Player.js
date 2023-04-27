@@ -7,9 +7,9 @@ export default function Player(props){
 
     return (
         <div className="fixed bottom-0 mx-auto w-3/6">
-            <div className="w-full">
-                <input type="range" min="1" max={props.duration} value={props.currentTime} className="w-full" />
-            </div>
+            {/*<div className="w-full">*/}
+            {/*    <input type="range" min="1" max={props.duration} value={props.currentTime} className="w-full" />*/}
+            {/*</div>*/}
             <div className="bg-gray-800 rounded-t-xl text-center">
                 {/*<input type="range" min="1" max="100" value="50" />*/}
                 <div className="inline-flex">
